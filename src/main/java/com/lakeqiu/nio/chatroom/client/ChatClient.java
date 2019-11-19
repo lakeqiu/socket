@@ -75,9 +75,13 @@ public class ChatClient {
                     System.out.println("客户端已经连接服务器");
                     // 注册一个READER事件
                     SocketChannel channel = (SocketChannel) selectionKey.channel();
+                    // 人为将程序中止，等待连接创建完成,否则会报错
+                    if (socketChannel.isConnectionPending()) {
+                        socketChannel.finishConnect();
+                        // 创建一个线程去处理用户控制台输入问题并发送给服务器
+                        new Thread(new UserInputHandler(this)).start();
+                    }
                     channel.register(selector, SelectionKey.OP_READ);
-                    // 创建一个线程去处理用户控制台输入问题并发送给服务器
-                    new Thread(new UserInputHandler(this)).start();
                 }
                 // 处理可读事件
                 if (selectionKey.isReadable()) {
