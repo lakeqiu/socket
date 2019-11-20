@@ -169,7 +169,7 @@ public class ChatServer {
            }
            // 如果该通道有效并且不是发送此消息的通道
            if (key.isValid() && !socketChannel.equals(channel)) {
-                // 切换为读模式情况信息，往里面将信息装进去再切换为写模式
+                // 切换为写模式情况信息，往里面将信息装进去再切换为读模式
                 writeBuffer.clear();
                 writeBuffer.put(charset.encode(socketChannel.socket().getPort() + ":" + msg));
                 writeBuffer.flip();
